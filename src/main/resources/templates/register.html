@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{base::layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>Register</title>
+<script>
+    // Validate form fields
+    function validatePassword() {
+        const password = document.getElementById('pass').value;
+        const confirmPassword = document.getElementById('confirmpass').value;
+        const passwordError = document.getElementById('password-error');
+        const confirmPasswordError = document.getElementById('confirm-password-error');
+
+        // Password strength pattern
+        const strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        if (!strongPasswordPattern.test(password)) {
+            passwordError.textContent = 'Password must be at least 8 characters long, include uppercase, lowercase, a digit, and a special character.';
+        } else {
+            passwordError.textContent = '';
+        }
+
+        if (password !== confirmPassword) {
+            confirmPasswordError.textContent = 'Passwords do not match.';
+        } else {
+            confirmPasswordError.textContent = '';
+        }
+    }
+</script>
+</head>
+<body>
+<section>
+		<div class="container mt-5 p-5">
+			<div class="row">
+				<div class="col-md-5 p-5">
+					<img alt="" src="img/ecom.png" width="100%" height="400px">
+				</div>
+				<div class="col-md-7 p-2">
+					<div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
+						<div class="card-header text-center">
+							<p class="fs-4 text-center">Register</p>
+							<th:block th:if="${session.succMsg}">
+								<p class="text-success fw-bold">[[${session.succMsg}]]</p>
+							</th:block>
+							<th:block th:if="${session.errorMsg}">
+								<p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+							</th:block>
+						</div>
+						<div class="card-body">
+							<form action="/saveUser" enctype="multipart/form-data" id="userRegister" novalidate
+								method="post">
+								<div class="row">
+									<div class="col">
+										<label class="form-label">Full Name</label> 
+										<input required class="form-control" name="name" type="text" 
+										pattern="^[a-zA-Z\s]+$" title="Name must only contain alphabets and spaces." 
+										oninvalid="this.setCustomValidity('Please enter a valid name containing only alphabets and spaces.')" 
+										oninput="this.setCustomValidity('')">
+									</div>
+
+									<div class="col">
+										<label class="form-label">Mobile Number</label> 
+										<input required class="form-control" name="mobileNumber" type="number" 
+										oninvalid="this.setCustomValidity('Please enter a valid mobile number.')" 
+										oninput="this.setCustomValidity('')">
+									</div>
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label">Email</label> 
+									<input required class="form-control" name="email" type="email" 
+										oninvalid="this.setCustomValidity('Please enter a valid email address.')" 
+										oninput="this.setCustomValidity('')">
+								</div>
+
+								<div class="row">
+									<div class="col">
+										<label class="form-label">Address</label> 
+										<input required class="form-control" name="address" type="text" 
+										oninvalid="this.setCustomValidity('Please enter your address.')" 
+										oninput="this.setCustomValidity('')">
+									</div>
+
+									<div class="col">
+										<label class="form-label">City</label> 
+										<input required class="form-control" name="city" type="text" 
+										oninvalid="this.setCustomValidity('Please enter your city.')" 
+										oninput="this.setCustomValidity('')">
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col">
+										<label class="form-label">State</label> 
+										<select required class="form-control" name="state" 
+										oninvalid="this.setCustomValidity('Please select your state.')" 
+										oninput="this.setCustomValidity('')">
+											<option value="">Select State</option>
+											<option value="Andhra Pradesh">Andhra Pradesh</option>
+											<option value="Arunachal Pradesh">Arunachal Pradesh</option>
+											<option value="Assam">Assam</option>
+											<option value="Bihar">Bihar</option>
+											<option value="Chhattisgarh">Chhattisgarh</option>
+											<option value="Goa">Goa</option>
+											<option value="Gujarat">Gujarat</option>
+											<option value="Haryana">Haryana</option>
+											<option value="Himachal Pradesh">Himachal Pradesh</option>
+											<option value="Jharkhand">Jharkhand</option>
+											<option value="Karnataka">Karnataka</option>
+											<option value="Kerala">Kerala</option>
+											<option value="Madhya Pradesh">Madhya Pradesh</option>
+											<option value="Maharashtra">Maharashtra</option>
+											<option value="Manipur">Manipur</option>
+											<option value="Meghalaya">Meghalaya</option>
+											<option value="Mizoram">Mizoram</option>
+											<option value="Nagaland">Nagaland</option>
+											<option value="Odisha">Odisha</option>
+											<option value="Punjab">Punjab</option>
+											<option value="Rajasthan">Rajasthan</option>
+											<option value="Sikkim">Sikkim</option>
+											<option value="Tamil Nadu">Tamil Nadu</option>
+											<option value="Telangana">Telangana</option>
+											<option value="Tripura">Tripura</option>
+											<option value="Uttar Pradesh">Uttar Pradesh</option>
+											<option value="Uttarakhand">Uttarakhand</option>
+											<option value="West Bengal">West Bengal</option>
+										</select>
+									</div>
+
+									<div class="col">
+										<label class="form-label">Pincode</label> 
+										<input required class="form-control" name="pincode" type="number" 
+										oninvalid="this.setCustomValidity('Please enter your pincode.')" 
+										oninput="this.setCustomValidity('')">
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col">
+										<label class="form-label">Password</label> 
+										<input required class="form-control" name="password" type="password" id="pass" 
+										pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}" 
+										title="Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character, and be at least 8 characters long." 
+										oninput="validatePassword()" 
+										oninvalid="this.setCustomValidity('Password must be strong and meet the specified criteria.')">
+										<small id="password-error" class="text-danger"></small>
+									</div>
+
+									<div class="col">
+										<label class="form-label">Confirm Password</label> 
+										<input required class="form-control" name="confirmpassword" type="password" id="confirmpass" 
+										oninput="validatePassword()" 
+										oninvalid="this.setCustomValidity('Please confirm your password.')">
+										<small id="confirm-password-error" class="text-danger"></small>
+									</div>
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label">Profile Image</label> 
+									<input class="form-control" name="img" type="file" required 
+										oninvalid="this.setCustomValidity('Please upload your profile image.')" 
+										oninput="this.setCustomValidity('')">
+								</div>
+
+								<button type="submit" class="btn bg-primary text-white col-md-12">Register</button>
+							</form>
+						</div>
+
+						<div class="card-footer text-center">
+							Already have an account? <a href="/login" class="text-decoration-none">Login</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
